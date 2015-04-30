@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>bird</title>
+
+<link rel="stylesheet" type="text/css" href="bird.css">
+
+</head>
+<body>
+    <img src="bird.png" id="bird_img" style="display:none;" />
+    <div class="container">
+        <canvas id="myCanvas" width='500px' height='500px' style='background:#70C6CE'>
+            
+        </canvas >
+        <div class="control">
+            <div class="info">
+                score:<span id="score">0</span>
+            </div>
+            <div class="buttonGroup">
+                <button class="start" id='start' onclick="javascript: Game.start();">开始</button>
+                <button class="stop" onclick="javascript: Game.
+                stop();">停止</button>
+            </div>
+        </div>  
+    </div>
+<script type="text/javascript" src="bird.js"></script>
+<script type="text/javascript" src="block.js"></script>
+<script type="text/javascript" src="main.js"></script>
+
+</body>
+</html>

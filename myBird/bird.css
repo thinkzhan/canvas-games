@@ -1,0 +1,31 @@
+.container{
+
+	background: #DDDA93;
+	margin: 0 auto;
+	width: 500px;
+	height: 550px;
+}
+
+/*#myCanvas{
+	background: gray;
+	height: 500px;
+	width: 500px;
+}*/
+
+.buttonGroup{
+	width: 150px;
+	float: right;
+	height:  50px;
+	line-height: 50px;
+	
+}
+
+.info{
+
+	float: left;
+}
+
+.score{
+
+	font:  bold 15px arial;
+}
