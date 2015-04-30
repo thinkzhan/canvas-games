@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>bird</title>
+
+<link rel="stylesheet" type="text/css" href="dance.css">
+
+</head>
+<body>
+    <img src="img/start.png" id="start_img" style="display:none;" />
+<img src="img/end.png" id="end_img" style="display:none;" />
+
+    <img src="img/up.gif" id="up_img" style="display:none;" />
+    <img src="img/down.gif" id="down_img" style="display:none;" />
+    <img src="img/left.gif" id="left_img" style="display:nonbingoe;" />
+    <img src="img/right.gif" id="right_img" style="display:none;" />
+    <img src="img/upbingo.gif" id="upbingo_img" style="display:none;" />
+    <img src="img/downbingo.gif" id="downbingo_img" style="display:none;" />
+    <img src="img/leftbingo.gif" id="leftbingo_img" style="display:none;" />
+    <img src="img/rightbingo.gif" id="rightbingo_img" style="display:none;" />
+   
+
+   <div id="game" style="position:relative;float:left;width:700px;height:500px;background:black;">
+      
+        <canvas id="main" width="700" height="500" style="  position:absolute;left:0;top:0;z-index:99;background:url('img/bg.jpg') no-repeat; background-size:cover"></canvas>
+
+        <canvas id="info" width="700" height="50" style="position:absolute;left:0;top:0;z-index:100;background:;"></canvas>
+        
+        <canvas id="welcome" width="200" height="100" style="position:absolute;left:250px;top:200px;z-index:101;background:;"></canvas>
+       
+
+      
+    </div>
+<script type="text/javascript" src="tools.js"></script>
+<script type="text/javascript" src="info.js"></script>
+<script type="text/javascript" src="dir.js"></script>
+<script type="text/javascript" src="main.js"></script>
+
+</body>
+</html>
