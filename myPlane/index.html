@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>bird</title>
+
+</head>
+<body>
+    <img src="img/img_bullet.png" id="img_bullet" style="display:none;" />
+    <img src="img/img_plane_main.png" id="img_plane_main" style="display:none;" />
+     <img src="img/img_plane_enemy.png" id="img_plane_enemy" style="display:none;" />
+    <img src="img/ui_new_word_png.png" id="ui_new_word" style="display:none;" />
+
+   <div id="game" style="position:relative;margin: 0 auto;width:500px;height:750px;background:black;">
+      
+        <canvas id="main" width="500" height="750" style="  position:absolute;left:0;top:0;z-index:99;background:url('img/img_bg_level_1.jpg') no-repeat; background-size:cover"></canvas>
+
+        <canvas id="info" width="500" height="50" style="position:absolute;left:0;top:0;z-index:100;background:;"></canvas>
+        
+        <canvas id="welcome" width="500" height="750" style="position:absolute;left:0;top:0;z-index:101;background:;"></canvas>
+       
+
+      
+    </div>
+
+<script type="text/javascript" src="tools.js"></script>
+<script type="text/javascript" src="plane.js"></script>
+<script type="text/javascript" src="enemy.js"></script>
+
+<script type="text/javascript" src="bullet.js"></script>
+<script type="text/javascript" src="info.js"></script>
+<script type="text/javascript" src="main.js"></script>
+</body>
+</html>
