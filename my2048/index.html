@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>my2048</title>
+
+</head>
+<body>
+   <img src="img/start.png" id="start_img" style="display:none;" />
+
+   <img src="img/but_empty.png" id="but_empty" style="display:none;" />
+   
+   <div id="game" style="position:relative;margin: 0 auto;width:500px;height:660px;background:;">
+       	<canvas id="info" width="500" height="160" style="position:absolute;left:0;top:0;z-index:99;background:;"></canvas>
+
+        <canvas id="bg" width="500" height="500" style="  position:absolute;left:0;top:160px;z-index:99;background:#BBADA0;"></canvas>
+
+        <canvas id="main" width="500" height="500" style="  position:absolute;left:0;top:160px;z-index:100;background:;"></canvas>
+  
+    </div>
+
+<script type="text/javascript" src="tools.js"></script>
+
+<script type="text/javascript" src="block.js"></script>
+
+<script type="text/javascript" src="main.js"></script>
+</body>
+</html>
