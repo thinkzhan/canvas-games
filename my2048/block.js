@@ -10,13 +10,19 @@ var Block =function(cxt, imgs, count, x, y){
 }
 Block.prototype = {
 	draw: function(){
-		T.drawImg(this.cxt, this.imgs[Math.log(this.count)/Math.log(2)-1], this.xx, this.yy);
+		if(this.count <= 4096)
+			T.drawImg(this.cxt, this.imgs[Math.log(this.count)/Math.log(2)-1], this.xx, this.yy);
+		else
+			T.drawImg(this.cxt, this.imgs[Math.log(this.count)/Math.log(2)-1], this.xx+4, this.yy+4);
 	},
 	drawMagic: function(){
 		T.drawImgMagic(this.cxt, this.imgs[Math.log(this.count)/Math.log(2)-1], this.xx, this.yy);
 	},
 	update: function(){
-		T.drawImg(this.cxt, this.imgs[Math.log(this.count)/Math.log(2)-1], 12+this.x*(12+110),12+this.y*(12+110));
+		if(this.count <= 4096)
+			T.drawImg(this.cxt, this.imgs[Math.log(this.count)/Math.log(2)-1], 12+this.x*(12+110),12+this.y*(12+110));
+		else
+			T.drawImg(this.cxt, this.imgs[Math.log(this.count)/Math.log(2)-1], 12+this.x*(12+110)+4,12+this.y*(12+110)+4);
 	}
 }
 BlockFactory = {
@@ -65,11 +71,22 @@ BlockFactory = {
 		block1.draw();
 		this.blockMap[this.x][this.y] = block1;
 	} ,
+	initBlock4096: function(){
+		this.getXY();
+		this.count = 131072;
+		var block1 = new Block(this.cxt, this.imgs, this.count, this.x, this.y);
+		block1.draw();
+		this.blockMap[this.x][this.y] = block1;
+	},
 	//判断重复
 	hasOne: function(){
 		if(this.blockMap[this.x][this.y] !=null)	
 			return true;
 		return false;
+	},
+	newOne:function(count, x, y){
+console.log(count);
+		return new Block(this.cxt, this.imgs, count, x, y);
 	}
 }
 

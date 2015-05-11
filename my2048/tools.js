@@ -1,3 +1,23 @@
+ Object.prototype.clone= function(){
+ 		var objClone ;
+ 		if( this.constructor == Object)
+ 			objClone = new this.constructor();
+ 		else
+ 			objClone = new this.constructor(this.valueOf());
+ 		for( var key in this){
+ 			if(objClone[key] != this[key]){
+ 				if(typeof(this[key]) == 'object'){
+ 					objClone[key] = this[key].clone();
+ 				}else{
+ 					objClone[key] = this[key];
+ 				}
+ 			}
+ 		}
+ 		objClone.toString = this.toString;
+ 		objClone.valueOf = this.valueOf;
+ 		
+ 		return objClone;
+ 	}
  //画布类
  var Canvas = {
 
@@ -17,7 +37,7 @@
  	drawText: function(cxt, string, x, y, color) {
 
  		cxt.fillStyle = color;
- 		cxt.font = 'bold 12px sans-serif';
+ 		cxt.font = 'bold 25px sans-serif';
  		cxt.fillText(string, x, y);
  	},
  	//画填充的方
@@ -217,7 +237,41 @@
  		}
  		return canMove;
  	},
+ 	
+ 	deepcopy2: function(obj) {
 
+ 		var out = new Array(),
+
+ 			len = obj.length;
+ 		for (var i = 0; i < len; i++) {
+ 			out[i] = new Array();
+ 			for (var j = 0; j < len; j++) {
+		 		if (obj[i][j]) {
+		 			var objClone ;
+		 			var nthis = obj[i][j];
+			 		if( nthis.constructor == Object)
+			 			objClone = new this.constructor();
+			 		else
+			 			objClone = new this.constructor(nthis.valueOf());
+			 		for( var key in nthis){
+			 			if(objClone[key] != nthis[key]){
+			 				if(typeof(this[key]) == 'object'){
+			 					objClone[key] = nthis[key].clone();
+			 				}else{
+			 					objClone[key] = nthis[key];
+			 				}
+			 			}
+			 		}
+			 		objClone.toString = nthis.toString;
+			 		objClone.valueOf = nthis.valueOf;
+ 					out[i][j] = objClone;
+ 				} else
+ 					out[i][j] = null;
+ 			}
+
+ 		}
+ 		return out;
+ 	},
  	deepcopy: function(obj) {
 
  		var out = new Array(),
@@ -228,6 +282,7 @@
  			for (var j = 0; j < len; j++) {
  				if (obj[i][j]) {
  					out[i][j] = obj[i][j].count;
+ 					console.log("obj[i][j].count:"+obj[i][j].count);
  				} else
  					out[i][j] = 0;
  			}

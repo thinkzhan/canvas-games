@@ -1,6 +1,8 @@
+var storage = window.localStorage;
 var Game = {
 	canvasList: [],
 	blocksMap: [],
+	oldMap:[],
 	imgs: [],
 	info: null,
 	interval: null,
@@ -29,29 +31,60 @@ var Game = {
 		Game.imgs = T.loadImgs(["img/but2.png", "img/but4.png", "img/but8.png",
 			"img/but16.png", "img/but32.png", "img/but64.png",
 			"img/but128.png", "img/but256.png", "img/but512.png",
-			"img/but1024.png", "img/but2048.png", "img/but4096.png", 'img/but_empty.png'
+			"img/but1024.png", "img/but2048.png", "img/but4096.png", "img/8196.png",
+			"img/16384.png","img/32768.png","img/65536.png","img/131072.png",
+			"img/262144.png","img/524288.png","img/1048576.png",
+			'img/but_empty.png'
 		], function(imgs) {
 		});
 	},
 	initBg: function() {
 		for (var i = 0; i < 4; i++) {
 			for (var j = 0; j < 4; j++) {
-				T.drawImg(this.canvasList.bg, document.getElementById("but_empty"), 12 + j * (12 + 110), 12 + i * (12 + 110));
+				 T.drawImg(this.canvasList.bg, document.getElementById("but_empty"), 12 + j * (12 + 110), 12 + i * (12 + 110));
+			// 	Canvas.fillRect(this.canvasList.bg,12 + j * (12 + 110), 12 + i * (12 + 110), 105, 105, '#000000');
+			// Canvas.drawText(this.canvasList.bg,'1048576', 12 + j * (12 + 110)+4, 12 + i * (12 + 110)+63, 'white');
 			}
 		}
+
 	},
 	initInfo: function() {
 		Canvas.drawImg(this.canvasList.info, document.getElementById("start_img"), 370, 80);
+		//undo
+		Canvas.fillRect(this.canvasList.info, 20, 85, 120, 40, 'gray');
+		Canvas.drawText(this.canvasList.info, '撤销', 50, 110, 'white');
+		//存盘
+		Canvas.fillRect(this.canvasList.info,20, 35, 120, 40, 'orange');
+		Canvas.drawText(this.canvasList.info, '存盘', 50, 60, 'white');
+		//读盘
+		Canvas.fillRect(this.canvasList.info,370, 35, 130, 40, 'pink');
+		Canvas.drawText(this.canvasList.info, '读盘', 400, 60, 'white');
 	},
 	initBind: function() {
 		var startContext = document.getElementById("info");
 		startContext.onclick = function(e) {
+			console.log(e.offsetX+":"+e.offsetY);
 			if (e.offsetX > 370 && e.offsetX < 500 && e.offsetY > 80 && e.offsetY < 120) {
 				if (!Game.isStart)
 					Game.start();
 				else
 					Game.restart();
+			}else if(e.offsetX > 20 && e.offsetX < 140 && e.offsetY > 80 && e.offsetY < 125){
+				Game.undo();
+			}else if(e.offsetX > 20 && e.offsetX < 140 && e.offsetY > 35 && e.offsetY < 75){
+				Game.saveToLocal(T.deepcopy(Game.blocksMap));
+			}else if(e.offsetX > 370 && e.offsetX < 500 && e.offsetY > 35 && e.offsetY < 75){
+				BlockFactory.blockMap =  Game.readFromLocal();
+				if(BlockFactory.blockMap){
+					Game.isStart = true;
+					Game.blocksMap = BlockFactory.blockMap;
+					Game.interval = window.setInterval(Game.loop, 20);
+				}
+					
+				else
+					alert("无存盘");
 			}
+
 		}
 		//监听键盘事件
 		document.onkeydown = function(e) {
@@ -59,6 +92,8 @@ var Game = {
 				var map = Game.blocksMap,
 					canMove = false,
 					i, j;
+				
+				var oldMap = T.deepcopy2(map);
 				if (e.keyCode == 38) {//上
 					for (i = 0; i < map.length; i++) {
 						for (j = 0; j < map[0].length; j++) {
@@ -66,8 +101,12 @@ var Game = {
 								canMove = true;
 						}
 					}
-					if (canMove)
+					if (canMove){
+						Game.oldMap.push(oldMap);
+						 console.log(oldMap);
 						BlockFactory.initBlock();
+					}
+						
 				} else if (e.keyCode == 40) {//下
 					for (i = 0; i < map.length; i++) {
 						for (j = map[0].length - 1; j >= 0; j--) {
@@ -75,8 +114,11 @@ var Game = {
 								canMove = true;		
 						}
 					}
-					if (canMove)
+					if (canMove){
+						Game.oldMap.push(oldMap);
+					
 						BlockFactory.initBlock();
+					}
 				} else if (e.keyCode == 37) {//左
 					for (i = 0; i < map.length; i++) {
 						for (j = 0; j < map[0].length; j++) {	
@@ -84,8 +126,11 @@ var Game = {
 								canMove = true;
 						}
 					}
-					if (canMove)
+					if (canMove){
+						Game.oldMap.push(oldMap);
+						
 						BlockFactory.initBlock();
+					}
 				} else if (e.keyCode == 39) {//右
 					for (i = map[0].length - 1; i >= 0; i--) {
 						for (j = 0; j < map.length; j++) {
@@ -93,8 +138,11 @@ var Game = {
 								canMove = true;
 						}
 					}
-					if (canMove)
+					if (canMove){
+						Game.oldMap.push(oldMap);
+					
 						BlockFactory.initBlock();
+					}
 				} else {
 					return;
 				}
@@ -139,8 +187,41 @@ var Game = {
 	//开始
 	start: function() {
 		this.isStart = true;
+	//	BlockFactory.init2Blocks();
+	
 		BlockFactory.init2Blocks();
+		
 		this.interval = window.setInterval(Game.loop, 20);
+	},
+	saveToLocal: function(item){
+		storage.setItem("key",JSON.stringify(item));
+			console.log(JSON.stringify(item));
+	},
+	readFromLocal: function(){
+		if(JSON.parse(storage.getItem("key"))){
+			var obj = JSON.parse(storage.getItem("key"));
+			console.log(obj);
+			var out = new Array(),
+
+	 			len = obj.length;
+	 		for (var i = 0; i < len; i++) {
+	 			out[i] = new Array();
+	 			for (var j = 0; j < len; j++) {
+	 			
+	 				if (obj[i][j] != 0) {
+
+	 					out[i][j] = BlockFactory.newOne(obj[i][j], i, j);
+
+	 				} else
+	 					out[i][j] = null;
+	 			}
+
+	 		}
+	 		console.log(out);
+	 		return out;
+		}else
+			return null;
+		
 	},
 	//重新开始
 	restart: function() {
@@ -152,6 +233,13 @@ var Game = {
 		Game.blocksMap = BlockFactory.initBlockMap();
 		this.start();
 	},
+	//撤销
+	undo: function(){
+		var map = Game.oldMap.pop();
+		 BlockFactory.blockMap = map;
+		Game.blocksMap = BlockFactory.blockMap;
+	}
+	,
 	//赢
 	win: function() {
 		this.interval = window.clearInterval(Game.interval);
@@ -180,6 +268,7 @@ var Game = {
 		var total = 0,
 			canMove = false,
 			map = Game.blocksMap;
+
 		Canvas.clear(Game.canvasList.main, 500, 500);
 		for (var i = map[0].length - 1; i >= 0; i--) {
 			for (var j = 0; j < map.length; j++) {
