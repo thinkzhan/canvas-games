@@ -1,4 +1,4 @@
-14暑假做的几个canvas小游戏demo。
+之前做的几个canvas小游戏demo。
 
 **重在掺合,忽略bug**把。。
 
